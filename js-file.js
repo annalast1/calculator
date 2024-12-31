@@ -1,81 +1,95 @@
+// Update variable to store displayValue
+
 // Basic calculator functions +,-,*,/
-function add(a, b) {
-    return a + b;
+function add(num1, num2) {
+    return num1 + num2;
 };
 
-function subtract(a, b) {
-    return a - b;
+function subtract(num1, num2) {
+    return num1 - num2;
 };
 
-function multiply(a, b) {
-    return a * b;
+function multiply(num1, num2) {
+    return num1 * num2;
 }
 
-function divideIt(a, b) {
-    return a / b;
+function divideIt(num1, num2) {
+    return num1 / num2;
 }
 
 // Variables for calculator operations
-const num1 = 0, num2 = 0, operator = '';
+let num1 = null, num2 = null, operator = null, displayValue = '';
+const regex = /[+|\-|x]/g;
 
-const zero = document.getElementById("zero");
-zero.addEventListener("click", () => {
-    display.textContent += '0';
-})
-const one = document.getElementById("one");
-one.addEventListener("click", () => {
-    display.textContent += '1';
-});
-const two = document.getElementById("two");
-two.addEventListener("click", () => {
-    display.textContent += '2';
-});
-const three = document.getElementById("three");
-three.addEventListener("click", () => {
-    display.textContent += '3';
-});
-const four = document.getElementById("four");
-four.addEventListener("click", () => {
-    display.textContent += '4';
-});
-const five = document.getElementById("five");
-five.addEventListener("click", () => {
-    display.textContent += '5';
-});
-const six = document.getElementById("six");
-six.addEventListener("click", () => {
-    display.textContent += '6';
-});
-const seven = document.getElementById("seven");
-seven.addEventListener("click", () => {
-    display.textContent += '7';
-})
-const eight = document.getElementById("eight");
-eight.addEventListener("click", () => {
-    display.textContent += '8';
-});
-const nine = document.getElementById("nine");
-nine.addEventListener("click", () => {
-    display.textContent += '9';
-});
-const plus = document.getElementById("plus");
-plus.addEventListener("click", () => {
-    display.textContent += '+';
-})
-const minus = document.getElementById("minus");
-minus.addEventListener("click", () => {
-    display.textContent += '-';
-});
-const times = document.getElementById("times");
-times.addEventListener("click", () => {
-    display.textContent += 'x';
-});
-const divide = document.getElementById("divide");
-divide.addEventListener("click", () => {
-    display.textContent += '/';
-});
+let display = document.getElementById("display");
+const equal = document.getElementById("equal");
+equal.addEventListener("click", calculation);
+
+// Make buttons functional
+const digitButtons = document.querySelectorAll('.digit');
+digitButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        if (display.textContent === '0'){
+            display.textContent = ''; 
+            display.textContent += button.innerText;
+            displayValue = button.innerText;
+    } else {
+        displayValue = '';
+        display.textContent += button.innerText;
+        displayValue = button.innerText;
+}})});
+
+const opButton = document.querySelectorAll('.operator');
+opButton.forEach(button => {
+    button.addEventListener("click", () => {
+        if (displayValue.match(regex) != null) {
+            return;
+        } else {
+            display.textContent += button.innerText
+            displayValue = button.innerText; 
+        }    
+})});
+
+
 const clear = document.getElementById("clear");
 clear.addEventListener("click", () => {
-    display.textContent = '';
+    display.textContent = '0';
 });
-const display = document.getElementById("display");
+
+function operate(num1, num2, operator) {
+    switch (operator) {
+        case '+':
+            return add(num1, num2);
+            break;
+        case '-':
+            return minus(num1, num2);
+            break;
+        case 'x':
+            return times(num1, num2);
+            break;
+        case '/':
+            return divide(num1, num2);
+            break;
+        default:
+            return "Operator Error";
+        }
+    }
+       
+    function calculation() {
+    // Get user input
+    const userIn = display.textContent;
+    const regex = /[+|\-|x]/g;    
+    // Create an array of all operators 
+    //let operator = [userIn.match(regex)];
+    //console.log(operator);
+    let op1 = userIn.search(regex);
+    console.log(op1);
+    let num = [...userIn];
+    num1 = num.splice(0, op1);
+    console.log(num1);
+    console.log(num);
+    
+}  
+   calculation();
+   
+
