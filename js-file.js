@@ -1,4 +1,4 @@
-// Update variable to store displayValue
+// Update display to show answer
 
 // Basic calculator functions +,-,*,/
 function add(num1, num2) {
@@ -19,9 +19,9 @@ function divideIt(num1, num2) {
 
 // Variables for calculator operations
 let num1 = null, num2 = null, operator = null, displayValue = '';
-const regex = /[+|\-|x]/g;
-
 let display = document.getElementById("display");
+const regex = /[+|\-|x]/g;
+const userIn = display.textContent;
 const equal = document.getElementById("equal");
 equal.addEventListener("click", calculation);
 
@@ -32,11 +32,11 @@ digitButtons.forEach(button => {
         if (display.textContent === '0'){
             display.textContent = ''; 
             display.textContent += button.innerText;
-            displayValue = button.innerText;
+            displayValue += button.innerText;
     } else {
-        displayValue = '';
         display.textContent += button.innerText;
-        displayValue = button.innerText;
+        displayValue += button.innerText;
+        console.log(...displayValue);
 }})});
 
 const opButton = document.querySelectorAll('.operator');
@@ -44,12 +44,15 @@ opButton.forEach(button => {
     button.addEventListener("click", () => {
         if (displayValue.match(regex) != null) {
             return;
-        } else {
-            display.textContent += button.innerText
-            displayValue = button.innerText; 
+        }
+        else {
+            num1 = Number(displayValue);
+            console.log(typeof num1);
+            display.textContent += button.innerText;            
+            displayValue = button.innerText;
+
         }    
 })});
-
 
 const clear = document.getElementById("clear");
 clear.addEventListener("click", () => {
@@ -76,18 +79,16 @@ function operate(num1, num2, operator) {
     }
        
     function calculation() {
-    // Get user input
-    const userIn = display.textContent;
-    const regex = /[+|\-|x]/g;    
+    
     // Create an array of all operators 
     //let operator = [userIn.match(regex)];
     //console.log(operator);
     let op1 = userIn.search(regex);
-    console.log(op1);
-    let num = [...userIn];
-    num1 = num.splice(0, op1);
-    console.log(num1);
-    console.log(num);
+    
+    num2 = Number(displayValue);
+    
+    console.log(num2); 
+    operate(num1, num2, op1);  
     
 }  
    calculation();
