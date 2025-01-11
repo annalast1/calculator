@@ -1,20 +1,31 @@
-// decimal point not functional yet
-
-
 // Variables for each part of sum
 let num1 = null, num2 = null, operator = [], result = 0;
+
 // Basic calculator functions +,-,*,/
 function add(num1, num2) {
-    return num1 + num2;
-    
+    result = num1 + num2;
+    if (Number.isInteger(result)) {
+        return result;
+    } else {
+        return Number(result.toFixed(6));
+    }    
 };
 function subtract(num1, num2) {
-    return num1 - num2;
+    result = num1 - num2;
+    if (Number.isInteger(result)) {
+        return result;
+    } else {
+        return Number(result.toFixed(6));
+    }
    
 };
 function multiply(num1, num2) {
-    return num1 * num2;
-    
+    result = num1 * num2;
+    if (Number.isInteger(result)) {
+        return result;
+    } else {
+        return Number(result.toFixed(6));
+    }    
 };
 function divide(num1, num2) {
     if (num1 <= 0) {
@@ -61,8 +72,6 @@ let displayValue = '';
 // Store last char
 let prev = '';
 
-
-
 const digitButtons = document.querySelectorAll('.digit');
 digitButtons.forEach(button => {
     button.addEventListener("click", () => {
@@ -89,15 +98,16 @@ opButton.forEach(button => {
         if (['+','-','x','/'].includes(prev)) {
             return alert("too many operators");
         } 
+        
         if (operator.length > 0) {
-            num2 = Number(displayValue);
-            num1 = operate(num1, num2, operator[0])
+            num2 = parseFloat(displayValue);
+            num1 = operate(num1, num2, operator);
             display.innerText = num1 + button.innerText; 
             operator = button.innerText;
             displayValue = '';
         }
         else {  
-            num1 = Number(displayValue);
+            num1 = parseFloat(displayValue);
             displayValue = '';
             display.textContent += button.innerText; 
             userIn += button.innerText;  
@@ -105,6 +115,19 @@ opButton.forEach(button => {
             operator += button.innerText;
         } 
 })});
+
+// Make decimal point functional
+const decimal = document.getElementById("decimal");
+decimal.addEventListener("click", () => {
+    if (prev =='.'|| displayValue.includes('.')) {
+       return
+    } else
+    display.textContent += decimal.innerText;
+    displayValue += decimal.innerText;
+    userIn += decimal.innerText;  
+    prev = userIn.slice(-1);
+    
+})
 
 // Make clear button functional
 const clear = document.getElementById("clear");
@@ -129,14 +152,24 @@ equal.addEventListener("click", () => {
         clearAll();
     } else {
         calculation();
+}});
+
+// Make backspace functional
+const backspace = document.getElementById("backspace");
+backspace.addEventListener("click", () => {
+    display.textContent = display.textContent.replace(prev, '');
+    userIn = display.textContent;
+    prev = userIn.slice(-1);
+
+    if (display.textContent.length < 1) {
+        display.textContent = 0;
     }
-    
-});
+})
 
 // Carry out sum
 function calculation() {
     // Get digits input after operator 
-    num2 = Number(displayValue);
+    num2 = parseFloat(displayValue);
     if (num2 == null || operator == '') {
         clearAll();
     } else {
