@@ -1,3 +1,6 @@
+// decimal point not functional yet
+
+
 // Variables for each part of sum
 let num1 = null, num2 = null, operator = [], result = 0;
 // Basic calculator functions +,-,*,/
@@ -14,6 +17,13 @@ function multiply(num1, num2) {
     
 };
 function divide(num1, num2) {
+    if (num1 <= 0) {
+        clearAll();
+    }
+    if (num2 === 0) {
+        clearAll();
+        return ("LMAO");
+    }
     result = (num1 / num2)
     if (Number.isInteger(result)) {
         return result;
@@ -78,7 +88,15 @@ opButton.forEach(button => {
         // Stops repeated input of operators 
         if (['+','-','x','/'].includes(prev)) {
             return alert("too many operators");
-        } else {  
+        } 
+        if (operator.length > 0) {
+            num2 = Number(displayValue);
+            num1 = operate(num1, num2, operator[0])
+            display.innerText = num1 + button.innerText; 
+            operator = button.innerText;
+            displayValue = '';
+        }
+        else {  
             num1 = Number(displayValue);
             displayValue = '';
             display.textContent += button.innerText; 
@@ -90,23 +108,38 @@ opButton.forEach(button => {
 
 // Make clear button functional
 const clear = document.getElementById("clear");
-clear.addEventListener("click", () => {
-    display.textContent = '0';
-    displayValue = '';
-    userIn = '';
-    operator = '';
-    num1 = null;
-    num2 = null;
-});
+clear.addEventListener("click", clearAll);
+
+function clearAll() {
+    display.textContent = '';
+        display.textContent = '0';
+        displayValue = '';
+        userIn = '';
+        operator = '';
+        num1 = null;
+        num2 = null;
+        prev = '';
+    };
 
 //Make equal button functional
 const equal = document.getElementById("equal");
-equal.addEventListener("click", calculation);
+equal.addEventListener("click", () => {
+    // if last input was operator - clearAll
+    if (displayValue == '' || operator == '') {
+        clearAll();
+    } else {
+        calculation();
+    }
+    
+});
 
 // Carry out sum
 function calculation() {
     // Get digits input after operator 
     num2 = Number(displayValue);
-    
-    console.log(operate(num1, num2, operator[0]));  
-} 
+    if (num2 == null || operator == '') {
+        clearAll();
+    } else {
+        display.innerText = operate(num1, num2, operator);
+    }  
+};
