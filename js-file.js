@@ -1,3 +1,4 @@
+//Just keyboard support to go
 // Variables for each part of sum
 let num1 = null, num2 = null, operator = [], result = 0;
 
@@ -89,6 +90,27 @@ digitButtons.forEach(button => {
             userIn = display.textContent;
             prev = userIn.slice(-1);
 }})});
+
+// Make keyboard numbers only functional
+document.body.addEventListener("keydown", (ev) => {
+    const regex = /[0-9]/;
+    if (regex.test(ev.key)) {
+        if (display.textContent === '0'){
+            display.textContent = ''; 
+            display.textContent = ev.key;
+            displayValue = ev.key
+            userIn = display.textContent;
+            prev = userIn.slice(-1);
+        } else {
+            display.innerText += ev.key;
+            displayValue += ev.key;
+            userIn = display.textContent;
+            prev = userIn.slice(-1);
+         
+        }
+    } else {
+        return;
+    }});
 
 // Make operator buttons functional
 const opButton = document.querySelectorAll('.operator');
