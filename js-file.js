@@ -1,4 +1,3 @@
-//Just keyboard support to go
 // Variables for each part of sum
 let num1 = null, num2 = null, operator = [], result = 0;
 
@@ -53,7 +52,7 @@ function operate(num1, num2, operator) {
         case '-':
             return subtract(num1, num2);
             break;
-        case 'x':
+        case '*':
             return multiply(num1, num2);
             break;
         case '/':
@@ -127,6 +126,7 @@ opButton.forEach(button => {
             display.innerText = num1 + button.innerText; 
             operator = button.innerText;
             displayValue = '';
+            
         }
         else {  
             num1 = parseFloat(displayValue);
